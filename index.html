@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
 <html lang="en">
     <title>Dataviz</title>
     <head>
@@ -15,11 +15,56 @@
         <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.js"> </script>
     </head>
     <body>
-        <div id="map" width="400" height="400" style="height: 400px;"></div>
-        <canvas id="myChart" width="400" height="400"></canvas>
-        <script>
+
+        <style>
+
+            body {
+                margin: 0.1vh 0.5vw;
+            }
+
+            .row {
+                display: flex;
+            }
+
+            .column {
+                flex: 50%;
+            }
+
+            .chart_column {
+
+                flex: 70%;
+            }
+
+            #map {
+                height: 100vh;
+                width: 100vw;
+            }
+
+            .map-wrapper {
+
+                height: 100%;
+                width: 40%;
+                display: flex;
+            }
+
+        </style>
+
+        
+        <div class="row">
+            <div class="map-wrapper">
+                <div id="map" class="map_column"></div>
+            </div>
+
+            <div class="chart-container chart_column" style="position: relative; height:100vh; width: 80vw;">
+                <canvas id="myChart"></canvas>
+            </div>
             
-            var map = L.map('map').setView([42.098115, 9.131013], 7);
+        </div>
+
+        <script>
+            var commune = "";
+            
+            var map = L.map('map').setView([42.158115, 9.131013], 9);
 
             var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
@@ -69,9 +114,10 @@
                 }
                 },
                 onEachFeature: function(feature, layer) {
-                layer.bindPopup('<p>'+feature.properties.libgeo+'</p>')
+                layer.bindPopup('<p>'+feature.properties.libgeo+'</p>').on('click', function() { commune = (feature.properties.libgeo); })
                 }
             }).addTo(map);
+
             //fill: #317581;
             //define a function to get and parse geojson from URL
             async function getGeoData(url) {

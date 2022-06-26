@@ -5,9 +5,86 @@
     <title>Dataviz</title>
     <head>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js" integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+        integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+        crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin=""></script>
+        <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.js"> </script>
     </head>
     <body>
+        <div id="map" width="400" height="400" style="height: 400px;"></div>
         <canvas id="myChart" width="400" height="400"></canvas>
+        <script>
+            
+            var map = L.map('map').setView([42.098115, 9.131013], 7);
+
+            var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            var json_data;
+
+            //extend Leaflet to create a GeoJSON layer from a TopoJSON file
+            L.TopoJSON = L.GeoJSON.extend({
+                addData: function (data) {
+                var geojson, key;
+                if (data.type === "Topology") {
+                    json_data = data;
+                    console.log(data.type);
+                    for (key in data.objects) {
+                        console.log(key);
+                        console.log(data.objects.hasOwnProperty(key));
+                        if (data.objects.hasOwnProperty(key)) {
+                            console.log(data.objects[key]);
+                            geojson = topojson.feature(data, data.objects[key]);
+                            console.log(geojson);
+                            L.GeoJSON.prototype.addData.call(this, geojson);
+                        }
+                    }
+                    return this;
+                }
+                L.GeoJSON.prototype.addData.call(this, data);
+                return this;
+                }
+            });
+
+            L.topoJson = function(json, options) {
+                return new L.TopoJSON(json, options);
+            };
+
+            //create an empty geojson layer
+            //with a style and a popup on click
+            var geojson = L.topoJson(null, {
+                style: function(feature){
+                return {
+                    color: "#000",
+                    opacity: 1,
+                    weight: 1,
+                    fillColor: '#35495d',
+                    fillOpacity: 0.8
+                }
+                },
+                onEachFeature: function(feature, layer) {
+                layer.bindPopup('<p>'+feature.properties.libgeo+'</p>')
+                }
+            }).addTo(map);
+            //fill: #317581;
+            //define a function to get and parse geojson from URL
+            async function getGeoData(url) {
+                let response = await fetch(url);
+                let data = await response.json();
+                console.log(data)
+                return data;
+            }
+            
+            //fetch the geojson and add it to our geojson layer
+            getGeoData('communes_4326.json').then(data => geojson.addData(data));
+
+        </script>
         <script>
         const ctx = document.getElementById('myChart').getContext('2d');
         const myChart = new Chart(ctx, {

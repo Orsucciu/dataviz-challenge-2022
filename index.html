@@ -79,14 +79,9 @@
                 var geojson, key;
                 if (data.type === "Topology") {
                     json_data = data;
-                    console.log(data.type);
                     for (key in data.objects) {
-                        console.log(key);
-                        console.log(data.objects.hasOwnProperty(key));
                         if (data.objects.hasOwnProperty(key)) {
-                            console.log(data.objects[key]);
                             geojson = topojson.feature(data, data.objects[key]);
-                            console.log(geojson);
                             L.GeoJSON.prototype.addData.call(this, geojson);
                         }
                     }
@@ -103,6 +98,8 @@
 
             //create an empty geojson layer
             //with a style and a popup on click
+            var coolVar;
+
             var geojson = L.topoJson(null, {
                 style: function(feature){
                 return {
@@ -114,16 +111,40 @@
                 }
                 },
                 onEachFeature: function(feature, layer) {
-                layer.bindPopup('<p>'+feature.properties.libgeo+'</p>').on('click', function() { commune = (feature.properties.libgeo); })
-                }
+                    console.log(feature);
+
+                    featureBounds = L.geoJson(feature).getBounds();
+
+                    var sw = featureBounds.getSouthWest();
+                    var ne = featureBounds.getNorthEast();
+                    var southWest = new L.LatLng(sw.lat, sw.lng);
+                    var northEast = new L.LatLng(ne.lat, ne.lng);
+                    bounds = new L.LatLngBounds(southWest, northEast);
+                    console.log(bounds);
+
+                    layer.bindPopup('<p>'+feature.properties.libgeo+'</p>').on('click', function() { commune = (feature.properties.libgeo); map.fitBounds(getBoundsFromFeature(this)); });
+
+                },
             }).addTo(map);
+
+            //takes in a feature, and gives back the bounds to zoom to
+            function getBoundsFromFeature(feature) {
+                featureBounds = feature.getBounds();
+
+                var sw = featureBounds.getSouthWest();
+                var ne = featureBounds.getNorthEast();
+                var southWest = new L.LatLng(sw.lat, sw.lng);
+                var northEast = new L.LatLng(ne.lat, ne.lng);
+                bounds = new L.LatLngBounds(southWest, northEast);
+
+                return bounds;
+            }
 
             //fill: #317581;
             //define a function to get and parse geojson from URL
             async function getGeoData(url) {
                 let response = await fetch(url);
                 let data = await response.json();
-                console.log(data)
                 return data;
             }
             

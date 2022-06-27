@@ -1,15 +1,18 @@
-    //zoom levels are used to help us know the current state of the app
-    //values:
-    // initial
-    // region
-    // commune
-    var current_zoom = "initial";
-
+    wait = (seconds) => 
+    new Promise(resolve => 
+    setTimeout(() => resolve(true), seconds * 1000)
+    );
+    
     var map = L.map('map').setView([42.158115, 9.031013], 9);
     map.options.minZoom = 9;
     map.setMaxBounds(map.getBounds());
+    map.on("zoomend",function() {
+        if (map.getZoom() < 10) {
+            swapZoomLevel();
+        }
+    });
 
-    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    var osm = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
@@ -42,8 +45,18 @@
     var regions = {
         "Balagna": {
             "name": "Balagna",
-            "color": "#13e735",
+            "color": "#de893f",
             "communes" : [
+                "Pietralba",
+                "Palasca",
+                "Olmi-Cappella",
+                "Novella",
+                "Mausoléo",
+                "Manso",
+                "Lama",
+                "Galéria",
+                "Castifao",
+                "Moltifao",
                 "Algajola",
                 "Aregno",
                 "Avapessa",
@@ -68,13 +81,17 @@
                 "Santa-Reparata-di-Balagna",
                 "Speloncato",
                 "Ville-di-Paraso",
-                "Zilia"
+                "Zilia",
+                "Asco",
+                "Vallica",
+                "Urtaca",
+                "Pioggiola"
             ]
         },
         
         "Nebbiu": {
             "name": "Nebbiu",
-            "color": "#13e200",
+            "color": "#41abb7",
             "communes" : [
                 "Barbaggio",
                 "Farinole",
@@ -96,7 +113,7 @@
 
         "Capicorsu": {
             "name": "Capicorsu",
-            "color": "#09e735",
+            "color": "#e18736",
             "communes": [
                 "Barrettali",
                 "Brando",
@@ -120,7 +137,7 @@
         },
 
         "Bagnaja": {
-            "name": "Bagnaja",
+            "name": "5096a4",
             "color": "#09e200",
             "communes": [
                 "Bastia",
@@ -143,8 +160,12 @@
 
         "Castagniccia": {
             "name": "Castagniccia",
-            "color": "#09e735",
+            "color": "#e9ada9",
             "communes": [
+                "Loreto-di-Casinca",
+                "Penta-di-Casinca",
+                "Castellare-di-Casinca",
+                "Campana",
                 "Bisinchi",
                 "Castello-di-Rostino",
                 "Castineta",
@@ -204,7 +225,7 @@
                 "Rapaggio",
                 "Stazzona",
                 "Valle-d'Orezza",
-                "Verdese",
+                "Verdèse",
                 "Felce",
                 "Novale",
                 "Ortale",
@@ -236,8 +257,9 @@
 
         "Curtinese": {
             "name": "Curtinese",
-            "color": "#09e735",
+            "color": "#8b6f9a",
             "communes": [
+                "Riventosa",
                 "Castiglione",
                 "Piedigriggio",
                 "Popolasca",
@@ -255,6 +277,7 @@
                 "Tralonca",
                 "Casanova",
                 "Poggio-di-Venaco",
+                "Santo-Pietro-di-Venaco",
                 "Venaco",
                 "Muracciole",
                 "Noceta",
@@ -265,7 +288,7 @@
 
         "Tavignanu": {
             "name": "Tavignanu",
-            "color": "#fff",
+            "color": "#fef000",
             "communes": [
                 "Aghione",
                 "Aléria",
@@ -277,7 +300,7 @@
                 "Castellare-di-Mercurio",
                 "Favalello",
                 "Mazzola",
-                "Sant'Andrea-di-Bozio",
+                "Sant'Andréa-di-Bozio",
                 "Sermano",
                 "Altiani",
                 "Antisanti",
@@ -299,7 +322,7 @@
 
         "Fiumorbu": {
             "name": "Fiumorbo",
-            "color": "#ffff",
+            "color": "#424c70",
             "communes": [
                 "Ghisoni",
                 "Lugo-di-Nazza",
@@ -318,7 +341,7 @@
 
         "Bunifaziu": {
             "name": "Bunifaziu",
-            "color": "#00000",
+            "color": "#d88d4a",
             "communes": [
                 "Bonifacio",
                 "Figari",
@@ -334,7 +357,7 @@
 
         "Rocca": {
             "name": "Rocca",
-            "color": "#12eF",
+            "color": "#fef000",
             "communes": [
                 "Belvédère-Campomoro",
                 "Bilia",
@@ -353,7 +376,7 @@
 
         "Alta Rocca": {
             "name": "Alta Rocca",
-            "color": "#3232",
+            "color": "#3f4c6e",
             "communes": [
                 "Carbini",
                 "Levie",
@@ -376,7 +399,7 @@
 
         "Taravu": {
             "name": "Taravu",
-            "color": "#ff0000",
+            "color": "#69a45b",
             "communes": [
                 "Argiusta-Moriccio",
                 "Casalabriva",
@@ -416,7 +439,7 @@
 
         "Gravona-Prunelli": {
             "name": "Gravona-Prunelli",
-            "color": "#ff0000",
+            "color": "#48713e",
             "communes": [
                 "Ajaccio",
                 "Alata",
@@ -444,7 +467,7 @@
 
         "Liamone": {
             "name": "Liamone",
-            "color": "#ff0000",
+            "color": "#f1be00",
             "communes": [
                 "Ambiegna",
                 "Arro",
@@ -475,7 +498,7 @@
 
         "Duii Sevi": {
             "name": "Duii Sevi",
-            "color": "#ff0000",
+            "color": "#cc4625",
             "communes": [
                 "Cristinacce",
                 "Évisa",
@@ -492,33 +515,129 @@
 
     //take in a feature, read its name, and returns the region specific things
     function getRegionSpecs(feature) {
+
         Object.entries(regions).forEach(([key, value]) => {
-            if (value.communes.includes(feature.properties.libgeo)) {
-                
-                console.log(feature.properties.libgeo + " is in " + regions[key].name);
-                return {
-                    name: regions[key].name,
-                    color: regions[key].color
+            //no point going further if the region has no communes
+            if(value.hasOwnProperty("communes")) {
+                //if the commune is in the region's communes array
+                if (value.communes.includes(feature.properties.libgeo)) {
+                    
+                    const theRegion = regions[key].name;
+                    const theColor = regions[key].color;
+                    //console.log(feature.properties.libgeo + " is in " + theRegion);
+                    feature.properties.region = theRegion;
+                    feature.properties.color = theColor;
+
+                    return true;
                 }
+            } else {
+
+                return false;
             }
+        });
+    }
+
+    function swapZoomLevel() {
+
+        if (current_zoom == "region"){
+
+            current_zoom = "commune";
+            map.addLayer(communesLayer);
+
+
+        } else if (current_zoom == "commune") {
+
+            current_zoom = "region";
+            map.addLayer(regionsTopo);
+            
+            map.removeLayer(communesLayer);
+        }
+    }
+
+    //polygons to merge
+    //each regions has an associated array witht the features to mege (the thing turf expects)
+    var regionsUnions = {
+
+    };
+
+    var regionsLayer = {
+
+        "type": "FeatureCollection",
+        "features": []
+    };
+
+    var regionsTopo = L.topoJson(null, {
+        style: function(feature) {
+            return {
+                fillColor: feature.properties.color,
+                fillOpacity: 0.0,
+                weight: 1.5,
+                opacity: 1,
+                color: feature.properties.color
+            };
+        },
+        onEachFeature: function(feature, layer) {
+
+            //this makes us zoom to the region when we click on it
+            featureBounds = L.geoJson(feature).getBounds();
+
+            var sw = featureBounds.getSouthWest();
+            var ne = featureBounds.getNorthEast();
+            var southWest = new L.LatLng(sw.lat, sw.lng);
+            var northEast = new L.LatLng(ne.lat, ne.lng);
+            bounds = new L.LatLngBounds(southWest, northEast);
+
+            layer.bindPopup('<p>'+feature.properties.region+'</p>').on('click', function() { map.fitBounds(getBoundsFromFeature(this)); change(); swapZoomLevel(); });
+        }
+    });
+
+
+    //need regionsUnions and regionsLayer to work
+    function populateRegionsLayer() {
+
+        Object.entries(regionsUnions).forEach(([key, value]) => {
+        
+            var union = regionsUnions[key][0];
+
+            for (let i = 1; i < regionsUnions[key].length; i++) {
+                union = turf.union(union, regionsUnions[key][i]);
+            }
+
+            regionsLayer.features.push(union);
         });
     }
 
     //create an empty geojson layer
     //with a style and a popup on click
 
-    var geojson = L.topoJson(null, {
+    var communesLayer = L.topoJson(null, {
         style: function(feature){
             return {
-                color: "#000",
+                color: feature.properties.color,
                 opacity: 1,
-                weight: 1,
+                weight: 1.5,
                 fillColor: "#000",
-                fillOpacity: 0.2
+                fillOpacity: 0.00
             }
         },
         onEachFeature: function(feature, layer) {
-            console.log(feature);
+
+            getRegionSpecs(feature);
+
+            //if the region is in the regionsUnions dictionnary
+            if(regionsUnions.hasOwnProperty(feature.properties.region)) {
+
+                //add the missing regions dynamically
+                regionsUnions[feature.properties.region].push(feature);
+            
+            } else {
+
+                //create the array for the region
+                regionsUnions[feature.properties.region] = [feature];
+
+            }
+
+            //bounds code
 
             featureBounds = L.geoJson(feature).getBounds();
 
@@ -527,12 +646,14 @@
             var southWest = new L.LatLng(sw.lat, sw.lng);
             var northEast = new L.LatLng(ne.lat, ne.lng);
             bounds = new L.LatLngBounds(southWest, northEast);
-            console.log(bounds);
 
-            layer.bindPopup('<p>'+feature.properties.libgeo+'</p>').on('click', function() { commune = (feature.properties.libgeo); map.fitBounds(getBoundsFromFeature(this)); });
+            //no need to zoom constantly in the end
+            //layer.bindPopup('<p>'+feature.properties.libgeo+'</p>').on('click', function() { swapZoomLevel(); commune = (feature.properties.libgeo); map.fitBounds(getBoundsFromFeature(this)); change(); });
+
+            layer.bindPopup('<p>'+feature.properties.libgeo+'</p>').on('click', function() {commune = (feature.properties.libgeo); change(); });
 
         },
-    }).addTo(map);
+    });
 
     //takes in a feature, and gives back the bounds to zoom to
     function getBoundsFromFeature(feature) {
@@ -556,4 +677,11 @@
     }
 
     //fetch the geojson and add it to our geojson layer
-    getGeoData('communes_4326.json').then(data => geojson.addData(data));
+    getGeoData('communes_4326.json').then(data => 
+        {
+            communesLayer.addData(data);
+            communesLayer.resetStyle();
+            populateRegionsLayer();
+            regionsTopo.addData(regionsLayer).addTo(map);
+        }    
+    );

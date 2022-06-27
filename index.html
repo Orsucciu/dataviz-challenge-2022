@@ -18,6 +18,7 @@
         integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
         crossorigin=""></script>
         <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.js"> </script>
+        <script src="https://www.unpkg.com/turf@3.0.14/turf.min.js"></script>
 
         <link rel="stylesheet" href="css/map.css"/>
 
@@ -26,6 +27,12 @@
 
             //this lets us know the current commune used
             var commune = "";
+
+            //zoom levels are used to help us know the current state of the app
+            //values:
+            // region
+            // commune
+            var current_zoom = "region";
         </script>
 
         <div class="row">
@@ -35,9 +42,6 @@
 
             <div class="chart-container chart_column" style="position: relative; height:100vh; width: 80vw;">
                 <canvas id="myChart"></canvas>
-                <input type="checkbox" id="temperature" onchange="affiche(0)" checked><label for="temperature">Temp&eacute;rature</label>
-                <input type="checkbox" id="temperature" onchange="" checked><label for="temperature">Temp&eacute;rature</label>
-                <input type="checkbox" id="temperature" onchange="" checked><label for="temperature">Temp&eacute;rature</label>
             </div>
             
         </div>

@@ -1,0 +1,28 @@
+body {
+    margin: 0.1vh 0.5vw;
+}
+
+.row {
+    display: flex;
+}
+
+.column {
+    flex: 50%;
+}
+
+.chart_column {
+
+    flex: 70%;
+}
+
+#map {
+    height: 100vh;
+    width: 100vw;
+}
+
+.map-wrapper {
+
+    height: 100%;
+    width: 40%;
+    display: flex;
+}

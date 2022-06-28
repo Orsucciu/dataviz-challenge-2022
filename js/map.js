@@ -1,15 +1,21 @@
+    //dead code
     wait = (seconds) => 
     new Promise(resolve => 
     setTimeout(() => resolve(true), seconds * 1000)
     );
     
-    var map = L.map('map').setView([42.158115, 9.031013], 9);
-    map.options.minZoom = 9;
+    //map instantiation
+    var map = L.map('map').setView([42.158115, 9.031013], 8);
+    map.options.minZoom = 8;
+    map.options.maxZoom = 15;
     map.setMaxBounds(map.getBounds());
+    //detect if the user zoom out of the communes view
+    let lastZoom = map.getZoom();
     map.on("zoomend",function() {
-        if (map.getZoom() < 10) {
+        if (map.getZoom() < lastZoom) {
             swapZoomLevel();
         }
+        lastZoom = map.getZoom();
     });
 
     var osm = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
@@ -17,6 +23,7 @@
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
+    //topojson handling
     var json_data;
 
     //extend Leaflet to create a GeoJSON layer from a TopoJSON file
@@ -42,6 +49,7 @@
         return new L.TopoJSON(json, options);
     };
 
+    //huge regions array
     var regions = {
         "Balagna": {
             "name": "Balagna",
@@ -137,7 +145,7 @@
         },
 
         "Bagnaja": {
-            "name": "5096a4",
+            "name": "Bagnaja",
             "color": "#09e200",
             "communes": [
                 "Bastia",

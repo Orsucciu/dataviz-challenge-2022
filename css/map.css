@@ -73,15 +73,3 @@ body {
     height:100vh; 
     overflow: auto;
 }
-
-#region_text {
-    display: none;
-}
-
-#commune_text {
-    display: none;
-}
-
-#myChart {
-    display: none;
-}

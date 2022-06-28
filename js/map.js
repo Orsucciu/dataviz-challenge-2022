@@ -548,11 +548,12 @@
     //handles hiding/showing the relevant layers
     function swapZoomLevel() {
 
+        document.getElementById("intro_text").style.display = "none";
+
         if (current_zoom == "region"){
 
             current_zoom = "commune";
             map.addLayer(communesLayer);
-
 
         } else if (current_zoom == "commune") {
 
@@ -588,7 +589,7 @@
     }
 
     //polygons to merge
-    //each regions has an associated array witht the features to mege (the thing turf expects)
+    //each region has an associated array witht the features to mege (the thing turf expects)
     var regionsUnions = {
 
     };

@@ -3,6 +3,8 @@ body {
     width: 100vw;
     max-width: 100vw;
     box-sizing: border-box;
+
+    font-family: "Muli";
 }
 
 .row {
@@ -48,6 +50,21 @@ body {
 #map_and_text {
 
     display: inline-flex;
+    width: 100%;
+    height: 50vh;
+    margin-bottom: 5vh;
+}
+
+#burnt_map {
+
+    justify-content: center;
+    height: 50vh;
+}
+
+#burnt_map img {
+
+    max-height: 100%;
+    display: block;
 }
 
 .chart_column {
@@ -55,4 +72,16 @@ body {
     position: relative; 
     height:100vh; 
     overflow: auto;
+}
+
+#region_text {
+    display: none;
+}
+
+#commune_text {
+    display: none;
+}
+
+#myChart {
+    display: none;
 }

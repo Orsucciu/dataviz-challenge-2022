@@ -97,6 +97,7 @@ $(document).ready(function () {
  
 
 //commune local var deleted to use the global one (see index.html)
+var commune;
 var nb=0;
 function change(){
     var response;
@@ -105,15 +106,29 @@ function change(){
     if(commune!=""){
         requestURL +='%20AND%20commune=%27'+commune+'%27';
     }
-    requestURL+='&dataset=incendies-de-forets-en-corse-de-1973-a-2017-base-promethee&x=alerte.year&x=alerte.month&sort=serie1-2&maxpoints=&y.serie1-1.expr=surface_parcourue_m2&y.serie1-1.func=SUM&y.serie1-1.cumulative=false&timezone=Europe/Berlin&lang=fr';
 
+    if(region!=""&&commune==""){         
+        for (var i = 0; i < regions[region]["communes"].length; i++) {           
+            if(i==0){             
+                requestURL +='%20AND%20(commune=%27'+regions[region]["communes"][i]+'%27';           
+            }           
+            else{             
+                requestURL +='%20OR%20commune=%27'+regions[region]["communes"][i]+'%27';           
+            }          
+        }         
+        requestURL +=')';     
+    }
+    
+    requestURL+='&dataset=incendies-de-forets-en-corse-de-1973-a-2017-base-promethee&x=alerte.year&x=alerte.month&sort=x.alerte.year,x.alerte.month&maxpoints=&y.serie1-1.expr=surface_parcourue_m2&y.serie1-1.func=SUM&y.serie1-1.cumulative=false&timezone=Europe%2FBerlin&lang=fr';
     
     $.ajax({
         url: requestURL,
         success: function(data) {
             visu = data;
-            j=1;
+            j=1; //month of the year
             k=2010;
+
+            
              for(var i = 0; i < data.length; i++){
                  if(data[i]['x']['month']==j&&data[i]['x']['year']==k){
                      values["surface_feu"].push(data[i]["serie1-1"]);
@@ -123,6 +138,8 @@ function change(){
                      for(var l=0;l<nb_0;l++){
                          values["surface_feu"].push(0);
                      }
+
+                    values["surface_feu"].push(data[i]["serie1-1"]);
                      
                  }
                 j=data[i]['x']['month'];
@@ -157,5 +174,5 @@ function change(){
 
 
 //i comment the init to be able to start with different data
-//change();
+change();
 

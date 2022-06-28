@@ -7,6 +7,7 @@
     <head>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js" integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <link href='https://fonts.googleapis.com/css?family=Muli' rel='stylesheet'>
     </head>
 
     <body>
@@ -48,7 +49,8 @@
                 <div id="intro_text">
                     <p class="removable_text">
                         La Corse est la plus boisée des îles de Méditérannée. Avec un taux de boisement de 58% en augmentation, la Corse serait le 5e pays le plus boisé d'Europe.
-                        Entre 1973 et 2017, la base de données recensant les feux de fôret (Prométhée) compte un total de <b id="counter_fires">38750</b> départs de feux, pour un total de 
+                        </br>
+                        Entre 1973 et 2017, la base de données recensant les feux de forêt (Prométhée) compte un total de <b id="counter_fires">38750</b> départs de feux, pour un total de 
                         <b id="total_burnt">3336 kilomètres carrés</b> brûlés.
                     </p>
                     <div id="map_and_text">
@@ -56,12 +58,11 @@
                             Ce chiffre représente environ <b>38%</b> de la superficie totale de la Corse.
                         </p>
                         <p id="burnt_map" class="right-column">
-                            <canvas id="map_canvas"></canvas>
-                            <img id="burnt_corsica_map" src="assets/Corsica-locator.svg.png" alt="corsica svg" />                            
+                            <img id="map_img" src="assets/Corsica-locator.svg.png" title="map of corsica representing woodlands and burnt areas"/>                  
                         </p>
                     </div>
                     <p>
-                        Si les feux de fôret font partie de l'écosystème, commme en témoigne la végétation au moins partiellement adaptée à ceux-ci, les effets du changement climatiques se font ressentir en exacerbant la sécheresse déjà présente dans cette région,
+                        Si les feux de forêt font partie de l'écosystème, commme en témoigne la végétation au moins partiellement adaptée à ceux-ci, les effets du changement climatiques se font ressentir en exacerbant la sécheresse déjà présente dans cette région,
                         ainsi qu'en alongeant et intensifiant la période "chaude" où les végétaux sèchent et deviennent du carburant prêt à brûler.
                     </p>
                 </div>

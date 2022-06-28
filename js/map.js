@@ -577,6 +577,7 @@
     function setCommune(commune_name) {
 
         commune = commune_name;
+        region = "";
         updateTexts();
     }
 
@@ -747,3 +748,41 @@
             regionsTopo.addData(regionsLayer).addTo(map);
         }    
     );
+
+    //unrelated to the map, functions that handle the canvas
+    //this is all unclean code, sadly
+
+    var can = document.getElementById("map_canvas");
+    var ctx = can.getContext("2d");
+
+    // Set display size (vw/vh).
+    var sizeWidth = 80 * window.innerWidth / 100,
+    sizeHeight = 150 * window.innerHeight / 100 || 766;
+
+    ctx.beginPath();
+    ctx.moveTo(0,0)
+    ctx.lineTo(0,300);
+    ctx.lineTo(300,300);
+    ctx.lineTo(300,0);
+    ctx.fillStyle = "#3c8cd1" 
+    ctx.fill();
+    var imageObj = new Image();
+    function drawPattern() {
+        var pattern = ctx.createPattern(imageObj, "repeat");
+        ctx.fillStyle = pattern;
+        ctx.fill();
+    }
+
+    function scaleToFit(img){
+        // get the scale
+        var scale = Math.min(can.width / img.width, can.height / img.height);
+        // get the top left position of the image
+        var x = (can.width / 2) - (img.width / 2) * scale;
+        var y = (can.height / 2) - (img.height / 2) * scale;
+        ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+    }
+    
+    imageObj.src = "assets/Corsica-locator.svg.png"; //transparent png
+    imageObj.onload = function(){
+        scaleToFit(this);
+    };

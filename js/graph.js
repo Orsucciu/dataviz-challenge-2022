@@ -96,8 +96,7 @@ $(document).ready(function () {
 });
  
 
-
-var commune="";
+//commune local var deleted to use the global one (see index.html)
 var nb=0;
 function change(){
     var response;
@@ -157,5 +156,6 @@ function change(){
 }
 
 
-change();
+//i comment the init to be able to start with different data
+//change();
 

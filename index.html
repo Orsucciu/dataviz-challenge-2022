@@ -22,16 +22,15 @@
 
         <link rel="stylesheet" href="css/map.css"/>
 
-        <!-- Steal the data for the risk map -->
-        <!---
-        <script src="https://www.risque-prevention-incendie.fr/corse/js/default.js"></script>
-        <!-- deosn't work for some reason. nvm -->
+        <!-- Steal the data for the risk map. Doesn't work -->
+        <!-- <script src="https://www.risque-prevention-incendie.fr/corse/js/default.js"></script> -->
 
         <script>
             //we keep our global vars here
 
             //this lets us know the current commune used
             var commune = "";
+            var region = "";
 
             //zoom levels are used to help us know the current state of the app
             //values:
@@ -45,7 +44,33 @@
                 <div id="map" class="map_column"></div>
             </div>
 
-            <div class="chart-container chart_column" style="position: relative; height:100vh; width: 80vw;">
+            <div class="chart-container chart_column">
+                <div id="intro_text">
+                    <p class="removable_text">
+                        La Corse est la plus boisée des îles de Méditérannée. Avec un taux de boisement de 58% en augmentation, la Corse serait le 5e pays le plus boisé d'Europe.
+                        Entre 1973 et 2017, la base de données recensant les feux de fôret (Prométhée) compte un total de <b id="counter_fires">38750</b> départs de feux, pour un total de 
+                        <b id="total_burnt">3336 kilomètres carrés</b> brûlés.
+                    </p>
+                    <div id="map_and_text">
+                        <p class="left-column">
+                            Ce chiffre représente environ <b>38%</b> de la superficie totale de la Corse.
+                        </p>
+                        <p id="burnt_map" class="right-column">
+                            <canvas id="map_canvas"></canvas>
+                            <img id="burnt_corsica_map" src="assets/Corsica-locator.svg.png" alt="corsica svg" />                            
+                        </p>
+                    </div>
+                    <p>
+                        Si les feux de fôret font partie de l'écosystème, commme en témoigne la végétation au moins partiellement adaptée à ceux-ci, les effets du changement climatiques se font ressentir en exacerbant la sécheresse déjà présente dans cette région,
+                        ainsi qu'en alongeant et intensifiant la période "chaude" où les végétaux sèchent et deviennent du carburant prêt à brûler.
+                    </p>
+                </div>
+                <div id="region_text">
+                    <p class="removable_text"> The region of <b id="region_b"></b> is particularly touched by forest fires. </p>
+                </div>
+                <div id="commune_text">
+                    <p class="removable_text"> The commune of <b id="commune_b"></b> is particularly touched by forest fires. </p>
+                </div>
                 <canvas id="myChart"></canvas>
             </div>
             
@@ -53,5 +78,19 @@
 
         <script type="text/javascript" src="js/map.js"></script>
         <script type="text/javascript" src="js/graph.js"></script>
+
+        <!--
+            Let's put our sources here
+
+            Taux de boisement :
+            La corse est la plus boisée des îles de méditérannée:
+            https://www.insee.fr/fr/statistiques/2019604
+
+            Taux de boisement pays d'europe :
+            https://atlasocio.com/classements/geographie/forets/classement-etats-par-surface-forestiere-pourcentage-europe.php
+
+            forest fires are getting worse:
+            https://www.sciencemediacentre.org/expert-reaction-to-wildfires-in-greece-and-california/
+        -->
     </body>
 </html>

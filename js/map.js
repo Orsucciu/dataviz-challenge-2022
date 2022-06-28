@@ -545,6 +545,7 @@
         });
     }
 
+    //handles hiding/showing the relevant layers
     function swapZoomLevel() {
 
         if (current_zoom == "region"){
@@ -560,6 +561,29 @@
             
             map.removeLayer(communesLayer);
         }
+
+        updateTexts();
+    }
+
+    //code that updates the text divs, and later the animations as well
+    var region_b = document.getElementById("region_b");
+    var commune_b = document.getElementById("commune_b");
+    function updateTexts() {
+
+        region_b.innerText = region;
+        commune_b.innerText = commune;
+    }
+
+    function setCommune(commune_name) {
+
+        commune = commune_name;
+        updateTexts();
+    }
+
+    function setRegion(region_name) {
+
+        region = region_name;
+        updateTexts();
     }
 
     //polygons to merge
@@ -595,7 +619,7 @@
             var northEast = new L.LatLng(ne.lat, ne.lng);
             bounds = new L.LatLngBounds(southWest, northEast);
 
-            layer.bindPopup('<p>'+feature.properties.region+'</p>').on('click', function() { map.fitBounds(getBoundsFromFeature(this)); change(); swapZoomLevel(); });
+            layer.bindPopup('<p>'+feature.properties.region+'</p>').on('click', function() { setRegion(feature.properties.region); map.fitBounds(getBoundsFromFeature(this)); change(); swapZoomLevel(); });
         }
     });
 
@@ -658,7 +682,7 @@
             //no need to zoom constantly in the end
             //layer.bindPopup('<p>'+feature.properties.libgeo+'</p>').on('click', function() { swapZoomLevel(); commune = (feature.properties.libgeo); map.fitBounds(getBoundsFromFeature(this)); change(); });
 
-            layer.bindPopup('<p>'+feature.properties.libgeo+'</p>').on('click', function() {commune = (feature.properties.libgeo); change(); });
+            layer.bindPopup('<p>'+feature.properties.libgeo+'</p>').on('click', function() {setCommune(feature.properties.libgeo); change(); });
 
         },
     });
@@ -683,6 +707,36 @@
         let data = await response.json();
         return data;
     }
+
+    /*zonesLayer = L.topoJson(null, {
+        style: function(feature) {
+
+            var t = {
+                opacity: 0.2,
+                fillOpacity: 0.9,
+                weight: 1
+            }
+            switch(feature.properties.level) {
+                case "0":
+                    return t.color = "#ffffff", t;
+                case "1":
+                    return t.color = "#ffff00", t;
+                case "2":
+                    return t.color = "#ff8000", t;
+                case "3":
+                    //afaik this never happens
+                    return t.color = "#ff0000", t;
+                case "4":
+                    return t.color = "#ff0000", t;
+                default:
+                    return t.color = "#ffffff", t;
+            }
+        },
+        onEachFeature: function(feature, layer) {
+
+            console.log(feature.properties);
+        }
+    }).addData(zones).addTo(map);*/
 
     //fetch the geojson and add it to our geojson layer
     getGeoData('communes_4326.json').then(data => 
